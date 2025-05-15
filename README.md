@@ -14,7 +14,8 @@ A simple React Native app built with Expo that displays a "Word of the Day" fetc
 
 
 ## Installation and Running the App
-![QR Code](./assets/images/QR.png)
+<img src="./assets/images/QR.png" alt="QR Code" width="200"/>
+
 
 ### Prerequisites
 
