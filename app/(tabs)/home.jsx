@@ -44,15 +44,15 @@ export default function Home() {
   }, []);
 
   return (
-    <ScrollView className="flex-1 bg-white px-4 mt-20 pt-10">
-      <Text className="text-3xl font-bold pb-8 text-center text-gray-800">Word Of The Day</Text>
+    <ScrollView className="flex-1 bg-white px-4  pt-10">
+      <Text className="text-2xl font-bold pb-8 pt-8 text-gray-800">Word Of The Day</Text>
       {loading ? (
         <ActivityIndicator size="large" color="#000" />
       ) : wordData ? (
         <View className="space-y-4">
           <Text className="text-2xl font-bold text-blue-600">{wordData.word}</Text>
           <Text className="text-base text-gray-700">Definition: {wordData.definition}</Text>
-          <Text className="text-base italic text-gray-600">Example: {wordData.example || 'N/A'}</Text>
+          {/* <Text className="text-base italic text-gray-600">Example: {wordData.example || 'N/A'}</Text> */}
         </View>
       ) : (
         <Text>Loading word...</Text>
