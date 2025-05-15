@@ -29,7 +29,6 @@ export default function History() {
     loadHistory();
   }, []);
 
-  // Helper to format date string nicely
   function formatDate(dateString) {
     const date = new Date(dateString);
     return date.toDateString() + ' ' + date.toLocaleTimeString();

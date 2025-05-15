@@ -38,7 +38,12 @@ export default function Home() {
       setLoading(false);
     }
   };
-
+  function capitalizeWords(str) {
+    return str
+      .split(' ')
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(' ');
+  }
   useEffect(() => {
     fetchNewWord();
   }, []);
@@ -50,7 +55,7 @@ export default function Home() {
         <ActivityIndicator size="large" color="#000" />
       ) : wordData ? (
         <View className="space-y-4">
-          <Text className="text-2xl font-bold text-blue-600">{wordData.word}</Text>
+          <Text className="text-2xl font-bold text-blue-600">{capitalizeWords(wordData.word)}</Text>
           <Text className="text-base text-gray-700">Definition: {wordData.definition}</Text>
           {/* <Text className="text-base italic text-gray-600">Example: {wordData.example || 'N/A'}</Text> */}
         </View>
