@@ -12,11 +12,9 @@ A simple React Native app built with Expo that displays a "Word of the Day" fetc
 - Navigation between Home and History screens using React Navigation.
 - Data persistence ensures history is saved between app sessions.
 
----
-
-
 
 ## Installation and Running the App
+![QR Code](./assets/images/QR.png)
 
 ### Prerequisites
 
