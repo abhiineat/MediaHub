@@ -14,16 +14,7 @@ export default function TabLayout() {
           ),
         }}
       />
-      <Tabs.Screen 
-        name="history"
-        options={{
-          headerShown: false,
-          tabBarLabel: 'History',
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="time" size={size} color={color} />
-          ),
-        }}
-      />
+      
     </Tabs>
   );
 }
