@@ -1,5 +1,14 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, ScrollView, Alert } from 'react-native';
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  ScrollView,
+  Alert,
+} from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { router } from 'expo-router';
 
 export const options = {
   title: 'Login',
@@ -20,7 +29,7 @@ export default function Login() {
     setLoading(true);
 
     try {
-      const response = await fetch('http://YOUR_BACKEND_API_URL/api/auth/login', {
+      const response = await fetch('http://192.168.1.4:8000/api/users/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, password }),
@@ -31,9 +40,16 @@ export default function Login() {
       if (!response.ok) {
         Alert.alert('Login Failed', data.message || 'Something went wrong');
       } else {
+        // ✅ Save tokens and user info
+        await AsyncStorage.setItem('accessToken', data.accessToken);
+        await AsyncStorage.setItem('refreshToken', data.refreshToken);
+        await AsyncStorage.setItem('user', JSON.stringify(data.user));
+
         Alert.alert('Success', 'Logged in successfully');
-        // TODO: Save tokens, navigate to home screen, etc.
         console.log('User:', data.user);
+
+        // ✅ Navigate to (tabs)/home
+        router.replace('(tabs)/home');
       }
     } catch (error) {
       Alert.alert('Error', 'Network error');
@@ -44,8 +60,16 @@ export default function Login() {
   };
 
   return (
-    <ScrollView contentContainerStyle={{ flexGrow: 1, justifyContent: 'center', padding: 20 }}>
-      <Text style={{ fontSize: 28, fontWeight: 'bold', marginBottom: 20 }}>Login</Text>
+    <ScrollView
+      contentContainerStyle={{
+        flexGrow: 1,
+        justifyContent: 'center',
+        padding: 20,
+      }}
+    >
+      <Text style={{ fontSize: 28, fontWeight: 'bold', marginBottom: 20 }}>
+        Login
+      </Text>
 
       <TextInput
         placeholder="Username"
@@ -63,7 +87,11 @@ export default function Login() {
         onChangeText={setPassword}
       />
 
-      <TouchableOpacity style={styles.loginBtn} onPress={handleLogin} disabled={loading}>
+      <TouchableOpacity
+        style={styles.loginBtn}
+        onPress={handleLogin}
+        disabled={loading}
+      >
         <Text style={{ color: '#fff', textAlign: 'center' }}>
           {loading ? 'Logging in...' : 'Login'}
         </Text>

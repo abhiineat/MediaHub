@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, ScrollView, Alert, Image } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
+import { router } from 'expo-router';
 
 export const options = {
   title: 'Register',
@@ -32,6 +33,7 @@ export default function Register() {
     }
   };
 
+
   const handleRegister = async () => {
     if (!fullname || !username || !email || !password) {
       Alert.alert('Error', 'Please fill all fields');
@@ -59,7 +61,7 @@ export default function Register() {
         });
       }
 
-      const response = await fetch('http://192.168.1.3:8000/api/users/register', {
+      const response = await fetch('http://192.168.1.4:8000/api/users/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'multipart/form-data',
@@ -73,7 +75,8 @@ export default function Register() {
         Alert.alert('Registration Failed', data.message || 'Something went wrong');
       } else {
         Alert.alert('Success', 'Registered successfully');
-        // TODO: Navigate to login screen
+        router.replace('/login');
+
       }
     } catch (error) {
       console.error(error);
