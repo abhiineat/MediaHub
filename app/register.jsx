@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, ScrollView, Alert, Image } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { router } from 'expo-router';
+import AsyncStorage from '@react-native-async-storage/async-storage'; 
 
 export const options = {
   title: 'Register',
@@ -75,6 +76,11 @@ export default function Register() {
         Alert.alert('Registration Failed', data.message || 'Something went wrong');
       } else {
         Alert.alert('Success', 'Registered successfully');
+        await AsyncStorage.setItem('user', JSON.stringify({
+            name: data.user.fullname,
+            email: data.user.email,
+            profilePhotoUrl: data.user.avatar,
+          }));
         router.replace('/login');
 
       }

@@ -1,32 +1,39 @@
-import { useRouter } from 'expo-router';
+import { useFocusEffect, useRouter } from 'expo-router';
 import { ScrollView, Text, View, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useCallback } from 'react';
+import { AuthContext } from '../context/AuthContext';
 
 export default function Home() {
   const router = useRouter();
-  const [hasToken, setHasToken] = useState(false);
+  const { isLoggedIn, setIsLoggedIn } = useContext(AuthContext);
 
-  useEffect(() => {
-    const checkToken = async () => {
-      try {
-        // Check for 'accessToken' as saved by your Login page
-        const token = await AsyncStorage.getItem('accessToken');
-        setHasToken(!!token);
-      } catch (error) {
-        console.log('Error reading token from AsyncStorage:', error);
-      }
-    };
+  useFocusEffect(
+    useCallback(() => {
+      const checkToken = async () => {
+        try {
+          const token = await AsyncStorage.getItem('accessToken');
+          if (!token) {
+            setIsLoggedIn(false);
+            router.replace('/login'); // Redirect if not logged in
+          } else {
+            setIsLoggedIn(true);
+          }
+        } catch (error) {
+          console.log('Error reading token:', error);
+        }
+      };
 
-    checkToken();
-  }, []);
+      checkToken();
+    }, [])
+  );
 
   return (
     <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
       <View className="flex-1 p-3 mt-10">
         <View className="flex-row justify-end items-center mt-2 mb-4">
-          {hasToken ? (
+          {isLoggedIn ? (
             <TouchableOpacity
               onPress={() => router.push('/profile')}
               className="p-2 rounded-full bg-gray-200"
@@ -52,7 +59,6 @@ export default function Home() {
           )}
         </View>
 
-        {/* Centered app description */}
         <View className="flex-1 justify-center items-center px-4">
           <Text className="text-2xl font-bold mb-4 text-center">
             Welcome to MediaHub

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import {
   View,
   Text,
@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { router } from 'expo-router';
+import { AuthContext } from './context/AuthContext'; // ✅ Import context
 
 export const options = {
   title: 'Login',
@@ -19,6 +20,8 @@ export default function Login() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
+
+  const { setIsLoggedIn } = useContext(AuthContext); // ✅ Use context
 
   const handleLogin = async () => {
     if (!username || !password) {
@@ -44,6 +47,8 @@ export default function Login() {
         await AsyncStorage.setItem('accessToken', data.accessToken);
         await AsyncStorage.setItem('refreshToken', data.refreshToken);
         await AsyncStorage.setItem('user', JSON.stringify(data.user));
+
+        setIsLoggedIn(true); // ✅ Update auth state
 
         Alert.alert('Success', 'Logged in successfully');
         console.log('User:', data.user);
@@ -110,7 +115,7 @@ const styles = {
     fontSize: 16,
   },
   loginBtn: {
-    backgroundColor: '#2563eb', // blue-600
+    backgroundColor: '#2563eb',
     padding: 14,
     borderRadius: 8,
   },

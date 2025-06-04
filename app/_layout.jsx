@@ -1,10 +1,15 @@
-import { Stack } from "expo-router";
-import "../global.css"
+import { Stack } from 'expo-router';
+import React from 'react';
+import '../global.css';
+import { AuthProvider } from './context/AuthContext'; // ✅ import properly
+
 export default function RootLayout() {
   return (
-    <Stack>
-      <Stack.Screen name="index" options={{ headerShown: false }} />
-      <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-    </Stack>
+    <AuthProvider>
+      <Stack>
+        <Stack.Screen name="index" options={{ headerShown: false }} />
+        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+      </Stack>
+    </AuthProvider>
   );
 }
